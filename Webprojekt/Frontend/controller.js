@@ -2,7 +2,7 @@ function loadList(){
     $("li").remove();
     $.ajax({
         type: "GET",
-        url: "../serviceHandler.php",
+        url: "../Backend/serviceHandler.php",
         cache: false,
         data: {method: "load", param: "load"},
         dataType: "json",
@@ -15,6 +15,7 @@ function loadList(){
         },
         error: function (response){
             console.log("error");
+            console.log(response);
         }
     })
 }

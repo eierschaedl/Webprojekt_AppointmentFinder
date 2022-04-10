@@ -5,7 +5,7 @@ $param = "";
 $method = "";
 
 isset($_GET["method"]) ? $method = $_GET["method"] : false;
-isset($_GET["param"]) ? $method = $_GET["param"] : false;
+isset($_GET["param"]) ? $param = $_GET["param"] : false;
 
 $logic = new logic();
 $result = $logic->handleRequest($method, $param);
