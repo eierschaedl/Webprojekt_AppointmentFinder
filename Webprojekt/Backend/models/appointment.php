@@ -1,5 +1,5 @@
 <?php
-class Appointment {
+class appointment {
     public $id;
     public $name;
     public $date_start;

@@ -8,20 +8,18 @@ function loadList(){
         dataType: "json",
         success: function (response){
             console.log("success");
-            for(i = 0; i < response.length; ++i){
-                e = response[i];
+            console.log(response);
+            response.forEach(appointment =>{
+                let e = appointment.name;
                 $("ol").append("<li>" + e + "</li>");
-            }
+                }
+            );
         },
         error: function (response){
             console.log("error");
             console.log(response);
         }
     })
-}
-
-function saveList(){
-    alert("This does nothing, I just thought it would be cool to later do something with it later. Actually, I should put this on my to-do-list!");
 }
 
 function addItem(){
@@ -66,21 +64,8 @@ $(document).ready(function () { /*sortable in jquery ui library, hide placeholde
 });
 
 $(document).ready(
-    $("#add").on("click", addItem)
-);
-
-$(document).ready(
-    $("#visibility").on("click", toggleList)
-);
-
-$(document).ready(
-    $("#edit").on("click", editList)
-);
-
-$(document).ready(
-    $("#load").on("click", loadList)
-);
-
-$(document).ready(
-    $("#save").on("click", saveList)
+    $("#add").on("click", addItem),
+    $("#visibility").on("click", toggleList),
+    $("#edit").on("click", editList),
+    loadList()
 );
