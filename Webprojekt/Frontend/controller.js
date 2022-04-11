@@ -37,11 +37,12 @@ function addItem(){
     let options = 1;
     $('#moreOptions').on('click', function(){
         options += 1;
-        let option = "<input type=\"datetime-local\" id=" + options + " required class=\"form-control\">\n"
+        let option = "<input type=\"datetime-local\" id=\"" + options + "\" class=\"form-control\">\n"
         $('#start').append(option);
+        console.log(option);
 
         options += 1;
-        option = "<input type=\"datetime-local\" id=" + options + " required class=\"form-control\">\n"
+        option = "<input type=\"datetime-local\" id=\"" + options + "\" class=\"form-control\">\n"
         $('#end').append(option);
     });
 
