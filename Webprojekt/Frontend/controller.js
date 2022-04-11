@@ -39,25 +39,28 @@ function addItem(){
         options += 1;
         let option = "<input type=\"datetime-local\" id=\"" + options + "\" class=\"form-control\">\n"
         $('#start').append(option);
-        console.log(option);
 
         options += 1;
         option = "<input type=\"datetime-local\" id=\"" + options + "\" class=\"form-control\">\n"
         $('#end').append(option);
     });
 
-    //submit -> ajax call
-    $('#submit').on('click', function (){
-        //check if input ok
-        //checkout jquery validate()
-        //ajax post to db
-        }
-    );
+    $('#appointmentForm').validate({
+        rules: {0: {required: true, date: true}, 1: {required: true, date: true}}, //checks that at least one start and end date are submitted
+        //we should write our own rule so that start is always earlier than end TODO
+        submitHandler: submit,
+    });
+
+}
+
+function submit(){
+    console.log("submitted");
+    //ajax call here TODO
 }
 
 function toggleList(){ /*toggle between hide and show*/
-    $("ol").toggle();
-    if($("ol").is(":visible")){
+    $('ol').toggle();
+    if($('ol').is(":visible")){
         $("#visibility").text("hide");
     }
     else{
