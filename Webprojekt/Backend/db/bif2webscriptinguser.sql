@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 10. Apr 2022 um 18:39
+-- Erstellungszeit: 11. Apr 2022 um 15:51
 -- Server-Version: 10.4.21-MariaDB
 -- PHP-Version: 8.0.12
 
@@ -28,11 +28,11 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `appoinments` (
-  `appointment_id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `description` varchar(1000) NOT NULL,
-  `creator` varchar(255) NOT NULL,
-  `active` tinyint(1) NOT NULL
+                               `appointment_id` int(11) NOT NULL,
+                               `name` varchar(255) NOT NULL,
+                               `description` varchar(1000) NOT NULL,
+                               `creator` varchar(255) NOT NULL,
+                               `active` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -42,11 +42,11 @@ CREATE TABLE `appoinments` (
 --
 
 CREATE TABLE `dateoptions` (
-  `dateOptions_id` int(11) NOT NULL AUTO_INCREMENT,
-  `start` datetime NOT NULL,
-  `end` datetime NOT NULL,
-  `votes` int(11) NOT NULL,
-  `fk_appointment_id` int(11) NOT NULL
+                               `dateOptions_id` int(11) NOT NULL,
+                               `start` datetime NOT NULL,
+                               `end` datetime NOT NULL,
+                               `votes` int(11) NOT NULL,
+                               `fk_appointment_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -56,9 +56,9 @@ CREATE TABLE `dateoptions` (
 --
 
 CREATE TABLE `people` (
-  `person_id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `comment` varchar(1000) NOT NULL
+                          `person_id` int(11) NOT NULL,
+                          `name` varchar(255) NOT NULL,
+                          `comment` varchar(1000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -68,8 +68,8 @@ CREATE TABLE `people` (
 --
 
 CREATE TABLE `people_dateoptions` (
-  `person_id` int(11) NOT NULL,
-  `dateOption_id` int(11) NOT NULL
+                                      `person_id` int(11) NOT NULL,
+                                      `dateOption_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -80,27 +80,49 @@ CREATE TABLE `people_dateoptions` (
 -- Indizes für die Tabelle `appoinments`
 --
 ALTER TABLE `appoinments`
-  ADD PRIMARY KEY (`appointment_id`);
+    ADD PRIMARY KEY (`appointment_id`);
 
 --
 -- Indizes für die Tabelle `dateoptions`
 --
 ALTER TABLE `dateoptions`
-  ADD PRIMARY KEY (`dateOptions_id`),
+    ADD PRIMARY KEY (`dateOptions_id`),
   ADD KEY `fk_dateOptions_appointments` (`fk_appointment_id`);
 
 --
 -- Indizes für die Tabelle `people`
 --
 ALTER TABLE `people`
-  ADD PRIMARY KEY (`person_id`);
+    ADD PRIMARY KEY (`person_id`);
 
 --
 -- Indizes für die Tabelle `people_dateoptions`
 --
 ALTER TABLE `people_dateoptions`
-  ADD PRIMARY KEY (`person_id`,`dateOption_id`),
+    ADD PRIMARY KEY (`person_id`,`dateOption_id`),
   ADD KEY `fk_dateOptions` (`dateOption_id`);
+
+--
+-- AUTO_INCREMENT für exportierte Tabellen
+--
+
+--
+-- AUTO_INCREMENT für Tabelle `appoinments`
+--
+ALTER TABLE `appoinments`
+    MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `dateoptions`
+--
+ALTER TABLE `dateoptions`
+    MODIFY `dateOptions_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `people`
+--
+ALTER TABLE `people`
+    MODIFY `person_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints der exportierten Tabellen
@@ -110,13 +132,13 @@ ALTER TABLE `people_dateoptions`
 -- Constraints der Tabelle `dateoptions`
 --
 ALTER TABLE `dateoptions`
-  ADD CONSTRAINT `fk_dateOptions_appointments` FOREIGN KEY (`fk_appointment_id`) REFERENCES `appoinments` (`appointment_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+    ADD CONSTRAINT `fk_dateOptions_appointments` FOREIGN KEY (`fk_appointment_id`) REFERENCES `appoinments` (`appointment_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints der Tabelle `people_dateoptions`
 --
 ALTER TABLE `people_dateoptions`
-  ADD CONSTRAINT `fk_dateOptions` FOREIGN KEY (`dateOption_id`) REFERENCES `dateoptions` (`dateOptions_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    ADD CONSTRAINT `fk_dateOptions` FOREIGN KEY (`dateOption_id`) REFERENCES `dateoptions` (`dateOptions_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_people` FOREIGN KEY (`person_id`) REFERENCES `people` (`person_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
