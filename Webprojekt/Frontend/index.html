@@ -15,25 +15,58 @@
 
 <body>
 <div class="container">
+    <h1>WEBSC2 Appointment Finder</h1>
     <div class="row">
-        <div class="col">
-            <input type="text" id="item" class="form-control">
-            <button id="add" type="button" class="btn btn-outline-dark">add</button>
+        <div id="newAppointment">
+            <h2>neues Event erstellen</h2>
+            <form>
+                <div class="form-group">
+                    <label for="name">Name des Events</label><br>
+                    <input id="name" type="text" required class="form-control"><br>
+                    <label for="description">Kurzbeschreibung</label><br>
+                    <textarea id="description" required class="form-control"></textarea><br>
+                    <label for="creator">Wer erstellt dieses Event?</label><br>
+                    <input id="creator" type="text" required class="form-control"><br>
+                    <p>Terminoptionen</p>
+                    <div class="row">
+                        <div class="col" id="start">
+                            <label for="start">Start</label>
+                            <input type="datetime-local" id="0" required class="form-control">
+                        </div>
+                        <div class="col" id="end">
+                            <label for="end">Ende</label>
+                            <input type="datetime-local" id="1" required class="form-control">
+                        </div>
+                    </div>
+                    <br>
+                    <button id="moreOptions" class="btn btn-outline-dark">weitere Terminoption hinzufügen</button>
+                </div>
+            </form>
+            <br>
+            <button id="submit" value ="submit" class="btn btn-outline-success">hinzufügen</button>
+            <button id="cancel" class="btn btn-outline-danger">abbrechen</button>
         </div>
+        <!--
         <div class="col btn-group">
             <button id="visibility" type="button" class="btn btn-outline-dark">hide</button>
-            <!--
             <button id="edit" type="button" class="btn btn-outline-dark">edit</button>
             delete function implemented but not accessible for user because anarchy
-            -->
         </div>
+        -->
         <div class="col-6"></div>
     </div>
 
-    <p>drag and drop list items to change order</p>
-    <ol id="sortable">
+    <div id="appointmentList">
+        <h2>Event Übersicht</h2>
+        <div class="col">
+            <!--<input type="text" id="item" class="form-control">-->
+            <button id="add" type="button" class="btn btn-outline-dark">Event hinzufügen</button>
+        </div>
+        <p>drag and drop um Reihenfolge zu ändern</p>
+        <ol id="sortable">
 
-    </ol>
+        </ol>
+    </div>
 </div>
 <script src="controller.js"></script>
 </body>

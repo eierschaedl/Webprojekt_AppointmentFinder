@@ -23,13 +23,35 @@ function loadList(){
 }
 
 function addItem(){
-    e = $("#item").val();
-    if(e == ""){
-        return; /*i don't see the sense in making empty to-do items*/
-    }
-    $("ol").append("<li>" + e + "</li>");
-    console.log("element added");
-    $("#item").val(""); /*remove text from inputbox*/
+    //visibilities
+    $('#appointmentList').slideUp(500, function () {
+        $('#newAppointment').fadeIn(200);
+    });
+    $('#cancel').on('click', function (){
+        $('#newAppointment').slideUp(500, function () {
+            $('#appointmentList').fadeIn(200);
+        });
+    });
+
+    //more options button
+    let options = 1;
+    $('#moreOptions').on('click', function(){
+        options += 1;
+        let option = "<input type=\"datetime-local\" id=" + options + " required class=\"form-control\">\n"
+        $('#start').append(option);
+
+        options += 1;
+        option = "<input type=\"datetime-local\" id=" + options + " required class=\"form-control\">\n"
+        $('#end').append(option);
+    });
+
+    //submit -> ajax call
+    $('#submit').on('click', function (){
+        //check if input ok
+        //checkout jquery validate()
+        //ajax post to db
+        }
+    );
 }
 
 function toggleList(){ /*toggle between hide and show*/
@@ -65,7 +87,8 @@ $(document).ready(function () { /*sortable in jquery ui library, hide placeholde
 
 $(document).ready(
     $("#add").on("click", addItem),
-    $("#visibility").on("click", toggleList),
-    $("#edit").on("click", editList),
+    $('#visibility').on("click", toggleList),
+    $('#edit').on("click", editList),
+    $('#newAppointment').hide(),
     loadList()
 );
