@@ -3,12 +3,21 @@ include("businessLogic/logic.php");
 
 $param = "";
 $method = "";
-
-isset($_GET["method"]) ? $method = $_GET["method"] : false;
-isset($_GET["param"]) ? $param = $_GET["param"] : false;
+$payload = "";
 
 $logic = new logic();
-$result = $logic->handleRequest($method, $param);
+
+if($_SERVER['REQUEST_METHOD'] == "POST") {
+    $method = $_POST["method"];
+    $param = $_POST["param"];
+    $payload = json_decode(file_get_contents('php://input'));
+}
+else if($_SERVER['REQUEST_METHOD'] == "GET"){
+    isset($_GET["method"]) ? $method = $_GET["method"] : false;
+    isset($_GET["param"]) ? $param = $_GET["param"] : false;
+    $payload = null;
+}
+$result = $logic->handleRequest($method, $param, $payload);
 
 if($result == null){
     response("GET", 400, null);

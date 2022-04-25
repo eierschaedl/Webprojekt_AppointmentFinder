@@ -5,6 +5,10 @@ class dataHandler{
         $res = $this->getDemoList();
         return $res;
     }
+    public function save(){
+        $res = "save to db";
+        return $res;
+    }
 
     private static function getDemoList(){
         $demoList = [
@@ -12,6 +16,9 @@ class dataHandler{
             new appointment(2, "Testtermin", "debugging", "Jassi", 1)
         ];
         return $demoList;
+    }
+    private static function dbaccess(){
+        //require once here
     }
 
 }

@@ -8,10 +8,13 @@ class logic{
         $this->dh = new dataHandler();
     }
 
-    function handleRequest($method, $param){
+    function handleRequest($method, $param, $payload){
         switch($method){
             case "load":
                 $res = $this->dh->load();
+                break;
+            case "newAppointment":
+                $res = $this->dh->save($payload);
                 break;
             //cases using param blabla to be cont'd
             default:

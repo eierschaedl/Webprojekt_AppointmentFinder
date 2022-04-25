@@ -7,7 +7,7 @@ function loadList(){
         data: {method: "load", param: "load"},
         dataType: "json",
         success: function (response){
-            console.log("success");
+            console.log("success loading list. the list:");
             console.log(response);
             response.forEach(appointment =>{
                 let e = appointment.name;
@@ -35,27 +35,69 @@ function addItem(){
 
     //more options button
     let options = 1;
-    $('#moreOptions').on('click', function(){
+    $('#moreOptions').on('click', function (){
         options += 1;
-        let option = "<input type=\"datetime-local\" id=\"" + options + "\" class=\"form-control\">\n"
+        let option = "<input type=\"datetime-local\" id=\"" + options + "\" name=\"" + options + "\" class=\"form-control\">\n"
         $('#start').append(option);
 
         options += 1;
-        option = "<input type=\"datetime-local\" id=\"" + options + "\" class=\"form-control\">\n"
+        option = "<input type=\"datetime-local\" id=\"" + options + "\" name=\"" + options + "\" class=\"form-control\">\n"
         $('#end').append(option);
     });
 
-    $('#appointmentForm').validate({
-        rules: {0: {required: true, date: true}, 1: {required: true, date: true}}, //checks that at least one start and end date are submitted
-        //we should write our own rule so that start is always earlier than end TODO
-        submitHandler: submit,
+    $('#submit').on('click', function (){
+        $('#appointmentForm').validate({
+            rules: {0: {required: true, date: true}, 1: {required: true, date: true}}, //checks that at least one start and end date are submitted
+            //we should write our own rule so that start is always earlier than end TODO
+            submitHandler: submit,
+        });
     });
+
 
 }
 
 function submit(){
     console.log("submitted");
-    //ajax call here TODO
+    var dateOptions = [$('#0').val(), $('#1').val()];
+
+    //i don't know why it won't take additional options.. TODO
+    var i = 2;
+    var j = 3;
+    while($('#i').length > 0) {
+        ++i;
+        ++j;
+        let additionalOption = [$('#i').val, $('#j').val]
+        dateOptions.concat(additionalOption);
+        console.log(dateOptions);
+    }
+
+    var payload = {
+        name : $('#name').val(),
+        description : $('#description').val(),
+        creator : $('#creator').val(),
+        method: "newAppointment",
+        param: "newAppointment"
+    };
+    console.log(payload);
+
+    $.ajax({
+        type: "POST",
+        method: "POST",
+        url: "../Backend/serviceHandler.php",
+        data: payload,
+        cache: false,
+        dataType: "json",
+        success: function (response) {
+            console.log("ajax post success. response:")
+            console.log(response);
+        },
+        error: function(response){
+            console.log("ajax post error. response:")
+            console.log(response);
+            let errormessage = "<p>" + response['status'] + " " + response['responseText'] + "</p>";
+            alert(errormessage);
+        }
+    });
 }
 
 function toggleList(){ /*toggle between hide and show*/
