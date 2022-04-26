@@ -5,8 +5,16 @@ class dataHandler{
         $res = $this->getDemoList();
         return $res;
     }
-    public function save(){
-        $res = "save to db";
+    public function save($payload){
+        $payload = $this->checkPayload($payload);
+        if($payload === null){
+            $res = "bad request - payload";
+        }
+        else {
+            $conn = $this->dbaccess();
+            //put stuff to db
+            $res = "db write success";
+        }
         return $res;
     }
 
@@ -17,9 +25,23 @@ class dataHandler{
         ];
         return $demoList;
     }
-    private static function dbaccess(){
-        //require once here
+    private function dbaccess(){
+        $host = $dbusername = $dbpassword = $dbname = "";
+
+        require_once 'db.php';
+
+        //create connection
+        $conn = mysqli_connect($host, $dbusername, $dbpassword, $dbname);
+        if (!$conn)
+        {
+            die("Connection failed!" . mysqli_connect_error());
+            $conn = null;
+        }
+        return $conn;
     }
 
+    private function checkPayload($payload){
+        //check if everything is alright
+    }
 }
 ?>

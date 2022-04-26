@@ -7,12 +7,12 @@ $payload = "";
 
 $logic = new logic();
 
-if($_SERVER['REQUEST_METHOD'] == "POST") {
-    $method = $_POST["method"];
-    $param = $_POST["param"];
+if($_SERVER['REQUEST_METHOD'] === "POST") {
+    isset($_POST["method"]) ? $method = $_POST["method"] : false;
+    isset($_POST["param"]) ? $param = $_POST["param"] : false;
     $payload = json_decode(file_get_contents('php://input'));
 }
-else if($_SERVER['REQUEST_METHOD'] == "GET"){
+else if($_SERVER['REQUEST_METHOD'] === "GET"){
     isset($_GET["method"]) ? $method = $_GET["method"] : false;
     isset($_GET["param"]) ? $param = $_GET["param"] : false;
     $payload = null;
