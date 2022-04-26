@@ -30,7 +30,7 @@ class dataHandler{
             new appointment(1, "WEBSC", "Projekt", "Gerald und Jassi", 1),
             new appointment(2, "Testtermin", "debugging", "Jassi", 1)
         ];
-        var_dump($demoList);
+        //var_dump($demoList);
         return $demoList;
     }
     private function dbaccess()
@@ -74,12 +74,12 @@ class dataHandler{
     {
         $sql = "SELECT * FROM appoinments WHERE active = 1";
         $result = $conn->query($sql);
-        var_dump($result);
+        //var_dump($result);
         $appointmentList = [];
         $counter = 0;
         while($row = $result->fetch_assoc()){
             $appointmentList[$counter] = new appointment($row['appointment_id'],$row['name'],$row['description'],$row['creator'],1);
-            var_dump($appointmentList);
+            //var_dump($appointmentList);
             $counter++;
         }
         return $appointmentList;
