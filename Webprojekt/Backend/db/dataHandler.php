@@ -5,6 +5,7 @@ class dataHandler{
     public function load(){
         $conn = $this->dbaccess();
         $res = $this->getActiveAppointments($conn);
+        $this->getDemoList();
         return $res;
     }
     public function save($payload){
@@ -15,6 +16,10 @@ class dataHandler{
         else {
             $conn = $this->dbaccess();
             //put stuff to db
+            $sql = "INSERT INTO appoinments (name, description, creator, active) VALUES (?, ?, ?, ?)";
+            $query = $conn->prepare($sql);
+            $query->bind_param("sssi", $payload->name, $payload->description, $payload->creator, $payload->active);
+            $result = $query->execute();
             $res = "db write success";
         }
         return $res;
@@ -25,9 +30,10 @@ class dataHandler{
             new appointment(1, "WEBSC", "Projekt", "Gerald und Jassi", 1),
             new appointment(2, "Testtermin", "debugging", "Jassi", 1)
         ];
+        var_dump($demoList);
         return $demoList;
     }
-    private function dbaccess(): mysqli
+    private function dbaccess()
     {
         $host = $dbusername = $dbpassword = $dbname = "";
 
@@ -41,18 +47,40 @@ class dataHandler{
 
     private function checkPayload($payload){
         //check if everything is alright
+        $payload->name = $this->test_input($payload->name);
+        $payload->description = $this->test_input($payload->description);
+        $payload->creator = $this->test_input($payload->creator);
+
+        if (!isset($payload->name) ||
+            !isset($payload->description) ||
+            !isset($payload->creator)) {
+            return null;
+        }
+        $payload = new appointment(null, $payload->name, $payload->description, $payload->creator, 1);
+        return $payload;
+    }
+
+    private function test_input($data)
+    {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
     }
 
 
 
-    private static function getActiveAppointments($conn): array
+    private static function getActiveAppointments($conn)
     {
         $sql = "SELECT * FROM appoinments WHERE active = 1";
         $result = $conn->query($sql);
-        $appointmentList = array(5);
-        for($counter = 0; $row = $result->fetch_assoc(); $counter++){
+        var_dump($result);
+        $appointmentList = [];
+        $counter = 0;
+        while($row = $result->fetch_assoc()){
             $appointmentList[$counter] = new appointment($row['appointment_id'],$row['name'],$row['description'],$row['creator'],1);
-
+            var_dump($appointmentList);
+            $counter++;
         }
         return $appointmentList;
     }
