@@ -3,7 +3,8 @@ include("models/appointment.php");
 
 class dataHandler{
     public function load(){
-        $res = $this->getActiveAppointments();
+        $conn = $this->dbaccess();
+        $res = $this->getActiveAppointments($conn);
         return $res;
     }
     public function save($payload){
@@ -26,18 +27,15 @@ class dataHandler{
         ];
         return $demoList;
     }
-    private function dbaccess(){
+    private function dbaccess(): mysqli
+    {
         $host = $dbusername = $dbpassword = $dbname = "";
 
         require_once 'db.php';
 
         //create connection
-        $conn = mysqli_connect($host, $dbusername, $dbpassword, $dbname);
-        if (!$conn)
-        {
-            die("Connection failed!" . mysqli_connect_error());
-            $conn = null;
-        }
+        $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
+
         return $conn;
     }
 
@@ -47,8 +45,8 @@ class dataHandler{
 
 
 
-    private static function getActiveAppointments(){
-        $conn = dbaccess();
+    private static function getActiveAppointments($conn): array
+    {
         $sql = "SELECT * FROM appoinments WHERE active = 1";
         $result = $conn->query($sql);
         $appointmentList = array(5);

@@ -69,13 +69,15 @@
         </ol>
     </div>
 </div>
-<?
+<?php
+/*
 echo "dataHandler";
 include "./Backend/db/dataHandler.php";
 echo "logic";
 include "./Backend/businessLogic/logic.php";
 echo "serviceHandler";
 include "./Backend/serviceHandler.php";
+*/
 ?>
 
 <script src="controller.js"></script>
