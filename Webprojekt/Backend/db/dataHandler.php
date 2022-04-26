@@ -9,8 +9,8 @@ class dataHandler{
         return $res;
     }
     public function save($payload){
-        $payload = $this->checkPayload($payload);
-        if($payload === null){
+        $appointment = $this->checkPayload($payload);
+        if($appointment == null){
             $res = "bad request - payload";
         }
         else {
@@ -18,7 +18,7 @@ class dataHandler{
             //put stuff to db
             $sql = "INSERT INTO appoinments (name, description, creator, active) VALUES (?, ?, ?, ?)";
             $query = $conn->prepare($sql);
-            $query->bind_param("sssi", $payload->name, $payload->description, $payload->creator, $payload->active);
+            $query->bind_param("sssi", $appointment->name, $appointment->description, $appointment->creator, $appointment->active);
             $result = $query->execute();
             $res = "db write success";
         }
@@ -47,17 +47,17 @@ class dataHandler{
 
     private function checkPayload($payload){
         //check if everything is alright
-        $payload->name = $this->test_input($payload->name);
-        $payload->description = $this->test_input($payload->description);
-        $payload->creator = $this->test_input($payload->creator);
-
-        if (!isset($payload->name) ||
-            !isset($payload->description) ||
-            !isset($payload->creator)) {
+        if (!isset($payload['name']) ||
+            !isset($payload['description']) ||
+            !isset($payload['creator'])) {
             return null;
         }
-        $payload = new appointment(null, $payload->name, $payload->description, $payload->creator, 1);
-        return $payload;
+
+        $payload['name'] = $this->test_input($payload['name']);
+        $payload['description'] = $this->test_input($payload['description']);
+        $payload['creator'] = $this->test_input($payload['creator']);
+
+        return new appointment(0, $payload['name'], $payload['description'], $payload['creator'], 1);
     }
 
     private function test_input($data)

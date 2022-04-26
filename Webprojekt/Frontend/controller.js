@@ -71,6 +71,12 @@ function submit(){
         console.log(dateOptions);
     }
 
+    var name = $('#name').val();
+    var description = $('#description').val();
+    var creator = $('#creator').val();
+    var method = "newAppointment";
+    var param = "newAppointment";
+    /*
     var payload = {
         name : $('#name').val(),
         description : $('#description').val(),
@@ -79,12 +85,18 @@ function submit(){
         param: "newAppointment"
     };
     console.log(payload);
-
+    */
     $.ajax({
         type: "POST",
         method: "POST",
         url: "../Backend/serviceHandler.php",
-        data: payload,
+        data: { data : {
+            name : name,
+            description : description,
+            creator : creator,
+            method: method,
+            param: param }
+        },
         cache: false,
         dataType: "json",
         success: function (response) {

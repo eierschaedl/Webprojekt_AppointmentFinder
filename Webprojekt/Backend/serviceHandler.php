@@ -8,9 +8,11 @@ $payload = "";
 $logic = new logic();
 
 if($_SERVER['REQUEST_METHOD'] === "POST") {
-    isset($_POST["method"]) ? $method = $_POST["method"] : false;
-    isset($_POST["param"]) ? $param = $_POST["param"] : false;
-    $payload = json_decode(file_get_contents('php://input'));
+    if(isset($_POST['data'])) {
+        $payload = $_POST['data'];
+        $method = $payload['method'];
+        $param = $payload['param'];
+    };
 }
 else if($_SERVER['REQUEST_METHOD'] === "GET"){
     isset($_GET["method"]) ? $method = $_GET["method"] : false;
