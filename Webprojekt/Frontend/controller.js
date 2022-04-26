@@ -14,12 +14,25 @@ function loadList(){
                 $("ol").append("<li>" + e + "</li>");
                 }
             );
+            $('li').on("click", details);
         },
         error: function (response){
             console.log("error");
             console.log(response);
         }
     })
+}
+
+function details(){
+    $('#appointmentList').slideUp(500, function () {
+        $('#details').fadeIn(200);
+    });
+    $('#back').on('click', function (){
+        loadList();
+        $('#details').slideUp(500, function () {
+            $('#appointmentList').fadeIn(200);
+        });
+    });
 }
 
 function addItem(){
@@ -76,16 +89,7 @@ function submit(){
     var creator = $('#creator').val();
     var method = "newAppointment";
     var param = "newAppointment";
-    /*
-    var payload = {
-        name : $('#name').val(),
-        description : $('#description').val(),
-        creator : $('#creator').val(),
-        method: "newAppointment",
-        param: "newAppointment"
-    };
-    console.log(payload);
-    */
+
     $.ajax({
         type: "POST",
         method: "POST",
@@ -102,6 +106,10 @@ function submit(){
         success: function (response) {
             console.log("ajax post success. response:")
             console.log(response);
+            loadList()
+            $('#newAppointment').slideUp(500, function () {
+                $('#appointmentList').fadeIn(200);
+            });
         },
         error: function(response){
             console.log("ajax post error. response:")
@@ -148,5 +156,6 @@ $(document).ready(
     $('#visibility').on("click", toggleList),
     $('#edit').on("click", editList),
     $('#newAppointment').hide(),
+    $('#details').hide(),
     loadList()
 );
