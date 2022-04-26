@@ -21,6 +21,19 @@ class dataHandler{
             $query->bind_param("sssi", $appointment->name, $appointment->description, $appointment->creator, $appointment->active);
             $result = $query->execute();
             $res = "db write success";
+
+            //select newest entry and get id to store with dateOptions
+            $sql = "SELECT max(appointment_id) from appoinments";
+            $result = $conn->query($sql);
+            $result = $result->fetch_assoc();
+            $appointmentID = intval($result["max(appointment_id)"], 10);
+            $votes = 0;
+            for ($i = 0; $i < count($payload['dateoptions']); $i +=2) {
+                $sql = "INSERT INTO dateoptions (start, end, votes, fk_appointment_id) VALUES (?, ?, ?, ?)";
+                $query = $conn->prepare($sql);
+                $query->bind_param("ssii", $payload['dateoptions'][$i], $payload['dateoptions'][$i+1], $votes, $appointmentID);
+                $query->execute();
+            }
         }
         return $res;
     }

@@ -73,16 +73,17 @@ function submit(){
     console.log("submitted");
     var dateOptions = [$('#0').val(), $('#1').val()];
 
-    //i don't know why it won't take additional options.. TODO
     var i = 2;
-    var j = 3;
-    while($('#i').length > 0) {
+    var id = "#" + i.toString();
+    while($(id).length > 0) {
+        var idI = "#" + i.toString();
+        dateOptions.push($(id).val());
         ++i;
-        ++j;
-        let additionalOption = [$('#i').val, $('#j').val]
-        dateOptions.concat(additionalOption);
-        console.log(dateOptions);
+        id = "#" + i.toString();
     }
+    console.log(dateOptions);
+    //TODO check if %2 == 0, else do something about it, like, delete last entry
+
 
     var name = $('#name').val();
     var description = $('#description').val();
@@ -99,7 +100,8 @@ function submit(){
             description : description,
             creator : creator,
             method: method,
-            param: param }
+            param: param,
+            dateoptions : dateOptions}
         },
         cache: false,
         dataType: "json",
