@@ -3,7 +3,7 @@ include("businessLogic/logic.php");
 
 $param = "";
 $method = "";
-$payload = "";
+$payload = null;
 
 $logic = new logic();
 
@@ -17,7 +17,9 @@ if($_SERVER['REQUEST_METHOD'] === "POST") {
 else if($_SERVER['REQUEST_METHOD'] === "GET"){
     isset($_GET["method"]) ? $method = $_GET["method"] : false;
     isset($_GET["param"]) ? $param = $_GET["param"] : false;
-    $payload = null;
+    if($param == "details"){
+        $payload = intval($_GET["id"], 10);
+    }
 }
 $result = $logic->handleRequest($method, $param, $payload);
 

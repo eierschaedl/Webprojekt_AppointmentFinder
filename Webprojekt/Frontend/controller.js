@@ -4,13 +4,14 @@ function loadList(){
         type: "GET",
         url: "../Backend/serviceHandler.php",
         cache: false,
-        data: {method: "load", param: "load"},
+        data: {method: "load", param: "overview"},
         dataType: "json",
         success: function (response){
             console.log("success loading list. the list:");
             console.log(response);
             response.forEach(appointment =>{
                 let name = appointment.name;
+                let id = "id=\"appointment-" + appointment.id + "\"";
                 let category = "class=\"active\"";
                 if (appointment.active == 0){
                     category = "class=\"inactive\"";
@@ -18,7 +19,7 @@ function loadList(){
                 let creator = "erstellt von: " + appointment.creator;
                 let description = "Beschreibung: " + appointment.description.substring(0, 100) + "...";
                 //$("ol").append("<li " + category + ">" + name + "</li>");
-                $("ol").append("<li " + category + "><div class=\"card\"><div class=\"card-header\">" + name + "</div><div class=\"class-body\">" + creator + "<br>" + description + "</div></div></li>");
+                $("ol").append("<li " + category + id +"><div class=\"card\"><div class=\"card-header\">" + name + "</div><div class=\"class-body\">" + creator + "<br>" + description + "</div></div></li>");
                 }
             );
             $('li').on("click", details);
@@ -31,15 +32,38 @@ function loadList(){
 }
 
 function details(){
+    //hide list list and show details section
     $('#appointmentList').slideUp(500, function () {
         $('#details').fadeIn(200);
     });
+    //create click event for back button to go back to list section
     $('#back').on('click', function (){
         loadList();
         $('#details').slideUp(500, function () {
             $('#appointmentList').fadeIn(200);
         });
     });
+    //get id to read details from database
+    let appointment = $(this);
+    let id = appointment.attr('id');
+    id = id.match(/\d+/);
+    id = id[0];
+    //console.log(id);
+    $.ajax({
+        type: "GET",
+        url: "../Backend/serviceHandler.php",
+        cache: false,
+        data: {method: "load", param: "details", id: id},
+        dataType: "json",
+        success: function (response){
+
+        },
+        error: function (response){
+            console.log("error");
+            let errormessage = "<p>" + response['status'] + " " + response['responseText'] + "</p>";
+            alert(errormessage);
+        }
+    })
 }
 
 function addItem(){

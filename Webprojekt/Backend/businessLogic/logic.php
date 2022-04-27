@@ -11,7 +11,7 @@ class logic{
     function handleRequest($method, $param, $payload){
         switch($method){
             case "load":
-                $res = $this->dh->load();
+                $res = $this->dh->load($param, $payload);
                 break;
             case "newAppointment":
                 $res = $this->dh->save($payload);

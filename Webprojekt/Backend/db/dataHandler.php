@@ -1,11 +1,17 @@
 <?php
 include("models/appointment.php");
+include("models/dateoption.php");
 
 class dataHandler{
-    public function load(){
+    public function load($param, $payload){
         $conn = $this->dbaccess();
-        $res = $this->getAppointments($conn);
-        $this->getDemoList();
+        if($param == "overview") {
+            $res = $this->getAppointments($conn);
+        }
+        else if($param == "details"){
+            $res = $this->getDetails($conn, $payload);
+        }
+        //$this->getDemoList();
         return $res;
     }
     public function save($payload){
@@ -96,6 +102,30 @@ class dataHandler{
             $counter++;
         }
         return $appointmentList;
+    }
+
+    private static function getDetails($conn, $payload)
+    {
+        $appointment = [];
+
+        //get appointment details
+        $sql = "SELECT * FROM appoinments WHERE appointment_id = $payload";
+        //var_dump($payload);
+        $result = $conn->query($sql);
+        //var_dump($result);
+        $result = $result->fetch_assoc();
+        $result = new appointment($result['appointment_id'],$result['name'],$result['description'],$result['creator'],$result['active']);
+        array_push($appointment, $result);
+
+        //get dateoptions
+        $sql = "SELECT * FROM dateoptions WHERE fk_appointment_id = $payload";
+        $result = $conn->query($sql);
+        while($row = $result->fetch_assoc()){
+            $dateoption = new dateoption($row['dateOptions_id'],$row['start'],$row['end'],$row['votes']);
+            array_push($appointment, $dateoption);
+        }
+        //print_r($appointment);
+        return $appointment;
     }
 }
 ?>
