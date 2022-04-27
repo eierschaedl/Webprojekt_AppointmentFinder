@@ -10,8 +10,15 @@ function loadList(){
             console.log("success loading list. the list:");
             console.log(response);
             response.forEach(appointment =>{
-                let e = appointment.name;
-                $("ol").append("<li>" + e + "</li>");
+                let name = appointment.name;
+                let category = "class=\"active\"";
+                if (appointment.active == 0){
+                    category = "class=\"inactive\"";
+                }
+                let creator = "erstellt von: " + appointment.creator;
+                let description = "Beschreibung: " + appointment.description.substring(0, 100) + "...";
+                //$("ol").append("<li " + category + ">" + name + "</li>");
+                $("ol").append("<li " + category + "><div class=\"card\"><div class=\"card-header\">" + name + "</div><div class=\"class-body\">" + creator + "<br>" + description + "</div></div></li>");
                 }
             );
             $('li').on("click", details);

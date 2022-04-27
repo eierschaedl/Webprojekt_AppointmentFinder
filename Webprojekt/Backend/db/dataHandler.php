@@ -4,7 +4,7 @@ include("models/appointment.php");
 class dataHandler{
     public function load(){
         $conn = $this->dbaccess();
-        $res = $this->getActiveAppointments($conn);
+        $res = $this->getAppointments($conn);
         $this->getDemoList();
         return $res;
     }
@@ -83,15 +83,15 @@ class dataHandler{
 
 
 
-    private static function getActiveAppointments($conn)
+    private static function getAppointments($conn)
     {
-        $sql = "SELECT * FROM appoinments WHERE active = 1";
+        $sql = "SELECT * FROM appoinments";
         $result = $conn->query($sql);
         //var_dump($result);
         $appointmentList = [];
         $counter = 0;
         while($row = $result->fetch_assoc()){
-            $appointmentList[$counter] = new appointment($row['appointment_id'],$row['name'],$row['description'],$row['creator'],1);
+            $appointmentList[$counter] = new appointment($row['appointment_id'],$row['name'],$row['description'],$row['creator'],$row['active']);
             //var_dump($appointmentList);
             $counter++;
         }
