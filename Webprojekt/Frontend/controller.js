@@ -1,5 +1,5 @@
 function loadList(){
-    $("li").remove();
+    $("ol").empty();
     $.ajax({
         type: "GET",
         url: "../Backend/serviceHandler.php",
@@ -38,7 +38,6 @@ function details(){
     });
     //create click event for back button to go back to list section
     $('#back').on('click', function (){
-        loadList();
         $('#details').slideUp(500, function () {
             $('#appointmentList').fadeIn(200);
         });
@@ -56,7 +55,40 @@ function details(){
         data: {method: "load", param: "details", id: id},
         dataType: "json",
         success: function (response){
+            $('tr').detach();
+            //[0] is the appointment, everything following are dateoptions
+            //so extract appointment info...
+            $('#detail-name').text(response[0]['name']);
+            $('#detail-creator').text("erstellt von " + response[0]['creator']);
+            $('#detail-description').text(response[0]['description']);
+            let tr = "";
+            let active = 0;
+            if(response[0]['active'] == 1){
+                tr = "<tr><th>Terminoption</th><th>Stimmen für diese Option</th><th>Auswahl</th>"
+                active = 1;
+            }
+            else{
+                tr = "<tr><th>Terminoption</th><th>Stimmen für diese Option</th><th>keine Auswahl mehr möglich</th>";
+                active = 0;
+            }
 
+            //and then remove, so we are left with just dateoptions.
+            response.shift();
+            $('#thead').append(tr);
+            response.forEach(dateoption =>{
+                let start = dateoption.start;
+                let end = dateoption.end;
+                let votes = dateoption.votes;
+                if(active) {
+                    let choice = "<input type=\"checkbox\" id=\"option-" + dateoption.id + "\" name=\"choice\" value=\"" + dateoption.id + "\">";
+                    tr = "<tr><td>" + start + " - " + end + "</td><td>" + votes + "</td><td>" + choice + "</td>"
+                }
+                else {
+                    tr = "<tr><td>" + start + " - " + end + "</td><td>" + votes + "</td>"
+                }
+                $('#tbody').append(tr);
+                }
+            );
         },
         error: function (response){
             console.log("error");
