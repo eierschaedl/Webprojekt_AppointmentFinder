@@ -20,7 +20,7 @@
     <div class="row">
         <div id="newAppointment">
             <h2>neues Event erstellen</h2>
-            <form id="appointmentForm">
+            <form id="appointmentForm" class="col-6">
                 <div class="form-group">
                     <label for="name">Name des Events</label><br>
                     <input id="name" name="name" type="text" maxlength="255" required class="form-control"><br>
@@ -84,6 +84,16 @@
                 <tbody id="tbody"></tbody>
             </table>
         </div>
+        <!--TODO Kommentare anzeigen-->
+        <form id="choiceForm" class="col-6">
+            <div class="form-group">
+                <label for="person">Dein Name</label><br>
+                <input id="person" name="person" type="text" maxlength="255" required class="form-control"><br>
+                <label for="comment">Kommentar</label><br>
+                <textarea id="comment" name="comment" maxlength="1000" required class="form-control"></textarea><br>
+            </div>
+        </form>
+        <button id="submitChoice" class="btn btn-outline-success">abstimmen</button>
         <button id="back" class="btn btn-outline-danger">abbrechen</button>
     </div>
 </div>
