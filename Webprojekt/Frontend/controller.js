@@ -208,13 +208,17 @@ function editList(){
     });
 }
 
-$(document).ready(function () { /*sortable in jquery ui library, hide placeholders so the numbering doesn't change during drag and drop*/
+
+//$(document).ready(function () { /*sortable in jquery ui library, hide placeholders so the numbering doesn't change during drag and drop*/
+  /*
     $('ol').sortable({
         start: function( event, ui ){
             $(ui.item).parent().find('.ui-sortable-placeholder').hide();
         },
     });
 });
+   */
+
 
 $(document).ready(
     $("#add").on("click", addItem),
