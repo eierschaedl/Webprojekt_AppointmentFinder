@@ -22,14 +22,14 @@ class dataHandler{
         else {
             $conn = $this->dbaccess();
             //put stuff to db
-            $sql = "INSERT INTO appoinments (name, description, creator, active) VALUES (?, ?, ?, ?)";
+            $sql = "INSERT INTO appointments (name, description, creator, active) VALUES (?, ?, ?, ?)";
             $query = $conn->prepare($sql);
             $query->bind_param("sssi", $appointment->name, $appointment->description, $appointment->creator, $appointment->active);
             $result = $query->execute();
             $res = "db write success";
 
             //select newest entry and get id to store with dateOptions
-            $sql = "SELECT max(appointment_id) from appoinments";
+            $sql = "SELECT max(appointment_id) from appointments";
             $result = $conn->query($sql);
             $result = $result->fetch_assoc();
             $appointmentID = intval($result["max(appointment_id)"], 10);
@@ -91,7 +91,7 @@ class dataHandler{
 
     private static function getAppointments($conn)
     {
-        $sql = "SELECT * FROM appoinments";
+        $sql = "SELECT * FROM appointments";
         $result = $conn->query($sql);
         //var_dump($result);
         $appointmentList = [];
@@ -109,7 +109,7 @@ class dataHandler{
         $appointment = [];
 
         //get appointment details
-        $sql = "SELECT * FROM appoinments WHERE appointment_id = $payload";
+        $sql = "SELECT * FROM appointments WHERE appointment_id = $payload";
         //var_dump($payload);
         $result = $conn->query($sql);
         //var_dump($result);
