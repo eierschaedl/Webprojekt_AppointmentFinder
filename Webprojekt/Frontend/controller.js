@@ -98,6 +98,8 @@ function details(){
     })
 }
 
+var options;
+
 function addItem(){
     //visibilities
     $('#appointmentList').slideUp(500, function () {
@@ -109,16 +111,18 @@ function addItem(){
         });
     });
 
-    //more options button
-    let options = 1;
-    $('#moreOptions').on('click', function (){
-        options += 1;
-        let option = "<input type=\"datetime-local\" id=\"" + options + "\" name=\"" + options + "\" class=\"form-control\">\n"
-        $('#start').append(option);
-        options += 1;
-        option = "<input type=\"datetime-local\" id=\"" + options + "\" name=\"" + options + "\" class=\"form-control\">\n"
-        $('#end').append(option);
-    });
+    //one starting and ending is required...
+    $('#start').empty();
+    let start = "<input type=\"datetime-local\" id=\"0\" name=\"0\" required class=\"form-control\">\n"
+    $('#start').append(start);
+
+    $('#end').empty();
+    let end = "<input type=\"datetime-local\" id=\"1\" name=\"1\" required class=\"form-control\">\n"
+    $('#end').append(end);
+
+    //...more are optional
+    options = 1;
+    $('#moreOptions').on('click', moreOptions);
 
     $('#submit').on('click', function (){
         $('#appointmentForm').validate({
@@ -129,6 +133,15 @@ function addItem(){
     });
 }
 
+function moreOptions(){
+    options += 1;
+    let option = "<input type=\"datetime-local\" id=\"" + options + "\" name=\"" + options + "\" class=\"form-control\">\n";
+    $('#start').append(option);
+    options += 1;
+    option = "<input type=\"datetime-local\" id=\"" + options + "\" name=\"" + options + "\" class=\"form-control\">\n";
+    $('#end').append(option);
+}
+
 function submit(){
     console.log("submitted");
     var dateOptions = [$('#0').val(), $('#1').val()];
@@ -136,9 +149,14 @@ function submit(){
     var i = 2;
     var id = "#" + i.toString();
     while($(id).length > 0) {
-        var idI = "#" + i.toString();
-        dateOptions.push($(id).val());
-        ++i;
+        id = "#" + i.toString();
+        let j = i + 1;
+        var nextId = '#' + j.toString();
+        if((i % 2 == 0) && ($(id).val() != $(nextId).val())) {
+            dateOptions.push($(id).val());
+            dateOptions.push($(nextId).val());
+        }
+        i += 2;
         id = "#" + i.toString();
     }
     console.log(dateOptions);
@@ -169,7 +187,7 @@ function submit(){
             console.log("ajax post success. response:")
             console.log(response);
             loadList();
-                $('#details').slideUp(500, function () {
+                $('#newAppointment').slideUp(500, function () {
                 $('#appointmentList').fadeIn(200);
             });
         },
@@ -284,7 +302,7 @@ function editList(){
 
 
 $(document).ready(
-    $("#add").on("click", addItem),
+    $('#add').on("click", addItem),
     $('#submitChoice').on("click", addPerson),
     $('#visibility').on("click", toggleList),
     $('#edit').on("click", editList),

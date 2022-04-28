@@ -39,11 +39,6 @@ CREATE TABLE `appointments` (
 -- Dumping data for table `appointments`
 --
 
-INSERT INTO `appointments` (`appointment_id`, `name`, `description`, `creator`, `active`) VALUES
-(1, 'WEBSC', 'Projekt', 'Gerald und Jassi', 1),
-(2, 'Testtermin', 'debugging', 'Jassi', 1),
-(3, 'Breakfast', 'Ham and Eggs', 'Cook', 1),
-(4, 'Inactive Appointment', 'Test inactive', 'asdf', 0);
 
 -- --------------------------------------------------------
 
