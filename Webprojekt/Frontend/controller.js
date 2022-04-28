@@ -168,7 +168,6 @@ function addItem(){
     $('#submit').on('click', function (){
         $('#appointmentForm').validate({
             rules: {0: {required: true, date: true}, 1: {required: true, date: true}}, //checks that at least one start and end date are submitted
-            //we should write our own rule so that start is always earlier than end TODO
             submitHandler: submit,
         });
     });
