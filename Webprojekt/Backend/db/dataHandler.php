@@ -86,6 +86,21 @@ class dataHandler{
         return $res;
     }
 
+    public function deleteAppointment($payload){
+        $conn = $this->dbaccess();
+
+        $id = intval($payload['id']);
+        //print_r($id);
+        $sql = "DELETE from appointments WHERE appointment_id = $id";
+        //in case we misunterstood the grading matrix and this should actually just set appointment to inactive instead of deleting it:
+        //$sql = "UPDATE appointments SET active = 0 WHERE appointment_id = $id";
+
+        $conn->query($sql);
+
+        $res = "deleted appointment";
+        return $res;
+    }
+
     private static function getDemoList(){
         $demoList = [
             new appointment(1, "WEBSC", "Projekt", "Gerald und Jassi", 1),

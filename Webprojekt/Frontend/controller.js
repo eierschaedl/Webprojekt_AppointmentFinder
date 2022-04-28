@@ -85,9 +85,11 @@ function details(){
                 if(active) {
                     let choice = "<input type=\"checkbox\" id=\"option-" + dateoption.id + "\" name=\"choice\" value=\"" + dateoption.id + "\">";
                     tr = "<tr><td>" + start + " - " + end + "</td><td>" + votes + "</td><td>" + choice + "</td>"
+                    $('#choiceForm').show();
                 }
                 else {
                     tr = "<tr><td>" + start + " - " + end + "</td><td>" + votes + "</td>"
+                    $('#choiceForm').hide();
                 }
                 $('#tbody').append(tr);
                 }
@@ -117,8 +119,24 @@ function loadComments(){
 }
 function deleteAppointment(){
     let detail = $('#detail-id').text();
-    alert(detail);
-
+    $.ajax({
+        type: "POST",
+        method: "POST",
+        url: "../Backend/serviceHandler.php",
+        cache: false,
+        data: { data: {
+            method: "delete", param: "appointment", id: detail}
+        },
+        dataType: "json",
+        success: function (response) {
+            location.reload();
+        },
+        error: function (response){
+                console.log("error");
+                let errormessage = "<p>" + response['status'] + " " + response['responseText'] + "</p>";
+                alert(errormessage);
+            }
+    })
 }
 
 var options;
