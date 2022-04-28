@@ -1,5 +1,5 @@
 function loadList(){
-    $("ol").empty();
+    //$("ol").empty();
     $.ajax({
         type: "GET",
         url: "../Backend/serviceHandler.php",
@@ -61,6 +61,7 @@ function details(){
             $('#detail-name').text(response[0]['name']);
             $('#detail-creator').text("erstellt von " + response[0]['creator']);
             $('#detail-description').text(response[0]['description']);
+            var appointmentId = response[0]['id'];
             let tr = "";
             let active = 0;
             if(response[0]['active'] == 1){
@@ -89,9 +90,6 @@ function details(){
                 $('#tbody').append(tr);
                 }
             );
-
-            let showComments = "<button id=\"showComments\" class=\"btn btn-outline-secondary\">Kommentare anzeigen</button>";
-            $('#choiceForm').prepend(showComments);
 
             $('#showComments').on('click', loadComments);
 
@@ -203,10 +201,11 @@ function submit(){
         success: function (response) {
             console.log("ajax post success. response:")
             console.log(response);
-            loadList();
-                $('#newAppointment').slideUp(500, function () {
-                $('#appointmentList').fadeIn(200);
-            });
+            //loadList();
+            //    $('#newAppointment').slideUp(500, function () {
+            //    $('#appointmentList').fadeIn(200);
+            //});
+            location.reload();
         },
         error: function(response){
             console.log("ajax post error. response:")
@@ -250,9 +249,10 @@ function submitPerson(){
         success: function (response) {
             console.log("ajax post success. response:")
             console.log(response);
-            $('#details').slideUp(500, function () {
-                $('#appointmentList').fadeIn(200);
-            });
+            //$('#details').slideUp(500, function () {
+            //    $('#appointmentList').fadeIn(200);
+            //});
+            location.reload();
         },
         error: function(response){
             console.log("ajax post error. response:")
