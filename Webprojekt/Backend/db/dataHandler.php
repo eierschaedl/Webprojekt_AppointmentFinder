@@ -1,6 +1,8 @@
 <?php
 include("models/appointment.php");
 include("models/dateoption.php");
+include("models/people.php");
+
 
 class dataHandler{
     public function load($param, $payload){

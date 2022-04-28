@@ -89,6 +89,11 @@ function details(){
                 $('#tbody').append(tr);
                 }
             );
+            $('#submitChoice').on('click', function (){
+                $('#choiceForm').validate({
+                    submitHandler: submitPerson(),
+                });
+            });
         },
         error: function (response){
             console.log("error");
@@ -200,33 +205,8 @@ function submit(){
     });
 }
 
-function addPerson(){
-    /*
-    //name + required
-    $('#submitChoice').on('click', function (){
-        console.log("adding person");
-        $('#choiceForm').validate({
-            rules: {
-                person: {required: true
-                },
-
-                comment: {
-                    depends: function (element) {
-                        return $("checkbox").is(":checked");
-                    }
-                }
-
-            },
-            submitHandler: submitPerson,
-        });
-    })
-     */
-    //id=\"option-" + dateoption.id
-    $('#submitChoice').on('click', submitPerson());
-}
-
 function submitPerson(){
-    console.log("success submitting person");
+    //console.log("success submitting person");
     var lastDate = $(":checkbox:last-of-type").attr("value");
     console.log(lastDate);
     //value
@@ -303,7 +283,6 @@ function editList(){
 
 $(document).ready(
     $('#add').on("click", addItem),
-    $('#submitChoice').on("click", addPerson),
     $('#visibility').on("click", toggleList),
     $('#edit').on("click", editList),
     $('#newAppointment').hide(),
