@@ -89,6 +89,12 @@ function details(){
                 $('#tbody').append(tr);
                 }
             );
+
+            let showComments = "<button id=\"showComments\" class=\"btn btn-outline-secondary\">Kommentare anzeigen</button>";
+            $('#choiceForm').prepend(showComments);
+
+            $('#showComments').on('click', loadComments);
+
             $('#submitChoice').on('click', function (){
                 $('#choiceForm').validate({
                     submitHandler: submitPerson(),
@@ -101,6 +107,12 @@ function details(){
             alert(errormessage);
         }
     })
+}
+
+function loadComments(){
+    //it would be amazing if every peron had a fk to the appointment they voted for,
+    //this would make loading comments easy.
+    //TODO
 }
 
 var options;
@@ -207,9 +219,16 @@ function submit(){
 
 function submitPerson(){
     //console.log("success submitting person");
-    var lastDate = $(":checkbox:last-of-type").attr("value");
-    console.log(lastDate);
-    //value
+    //var lastDate = $(":checkbox:last-of-type").attr("value");
+    //console.log(lastDate);
+
+    var chosenOptions = [];
+    $.each($("input[name='choice']:checked"), function(){
+        chosenOptions.push($(this).val());
+    });
+    console.log(chosenOptions);
+
+    //values
     var name = $("#person").val();
     var comment = $("#comment").val();
     var method = "newPeople";
@@ -223,14 +242,14 @@ function submitPerson(){
                 name: name,
                 comment: comment,
                 method: method,
-                param: param}
+                param: param,
+                chosenOptions : chosenOptions}
         },
         cache: false,
         dataType: "json",
         success: function (response) {
             console.log("ajax post success. response:")
             console.log(response);
-            loadList()
             $('#details').slideUp(500, function () {
                 $('#appointmentList').fadeIn(200);
             });

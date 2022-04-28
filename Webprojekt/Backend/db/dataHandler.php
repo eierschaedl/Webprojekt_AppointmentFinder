@@ -59,6 +59,28 @@ class dataHandler{
             $query->bind_param("ss", $people->name, $people->comment);
             $query->execute();
             $res = "db write success";
+
+            //select newest entry and get id to store with people_dateoptions
+            $sql = "SELECT max(person_id) from people";
+            $result = $conn->query($sql);
+            $result = $result->fetch_assoc();
+            $personID = intval($result["max(person_id)"], 10);
+
+            for ($i = 0; $i < count($payload['chosenOptions']); $i += 1) {
+                $dateOption_id = intval($payload['chosenOptions'][$i]);
+                $sql = "INSERT INTO people_dateOptions (person_id, dateOption_id) VALUES (?, ?)";
+                $query = $conn->prepare($sql);
+                $query->bind_param("ii", $personID, $dateOption_id);
+                $query->execute();
+
+                $sql = "SELECT votes from dateoptions WHERE dateOptions_id = $dateOption_id";
+                $result = $conn->query($sql);
+                $result = $result->fetch_assoc();
+                $votes = intval($result["votes"], 10);
+                $votes += 1;
+                $sql = "UPDATE dateoptions SET votes = $votes WHERE dateOptions_id = $dateOption_id";
+                $conn->query($sql);
+            }
         }
 
         return $res;
