@@ -61,7 +61,9 @@ function details(){
             $('#detail-name').text(response[0]['name']);
             $('#detail-creator').text("erstellt von " + response[0]['creator']);
             $('#detail-description').text(response[0]['description']);
-            var appointmentId = response[0]['id'];
+            $('#detail-id').text(response[0]['id']);
+            $('#detail-id').hide();
+
             let tr = "";
             let active = 0;
             if(response[0]['active'] == 1){
@@ -92,6 +94,7 @@ function details(){
             );
 
             $('#showComments').on('click', loadComments);
+            $('#delete').on('click', deleteAppointment);
 
             $('#submitChoice').on('click', function (){
                 $('#choiceForm').validate({
@@ -111,6 +114,11 @@ function loadComments(){
     //it would be amazing if every peron had a fk to the appointment they voted for,
     //this would make loading comments easy.
     //TODO
+}
+function deleteAppointment(){
+    let detail = $('#detail-id').text();
+    alert(detail);
+
 }
 
 var options;
