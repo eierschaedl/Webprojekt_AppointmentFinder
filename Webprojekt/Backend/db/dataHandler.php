@@ -44,6 +44,24 @@ class dataHandler{
         return $res;
     }
 
+    public function savePeople($payload){
+        $people = $this->checkPayloadPeople($payload);
+        if($people == null){
+            $res = "bad request - payload";
+        }
+        else {
+            $conn = $this->dbaccess();
+            //put stuff to db
+            $sql = "INSERT INTO people (name, comment) VALUES (?, ?)";
+            $query = $conn->prepare($sql);
+            $query->bind_param("ss", $people->name, $people->comment);
+            $query->execute();
+            $res = "db write success";
+        }
+
+        return $res;
+    }
+
     private static function getDemoList(){
         $demoList = [
             new appointment(1, "WEBSC", "Projekt", "Gerald und Jassi", 1),
@@ -77,6 +95,19 @@ class dataHandler{
         $payload['creator'] = $this->test_input($payload['creator']);
 
         return new appointment(0, $payload['name'], $payload['description'], $payload['creator'], 1);
+    }
+
+    private function checkPayloadPeople($payload){
+        //check if everything is alright
+        if (!isset($payload['name']) ||
+            !isset($payload['comment'])) {
+            return null;
+        }
+
+        $payload['name'] = $this->test_input($payload['name']);
+        $payload['comment'] = $this->test_input($payload['comment']);
+
+        return new people(0, $payload['name'], $payload['comment']);
     }
 
     private function test_input($data)

@@ -115,7 +115,6 @@ function addItem(){
         options += 1;
         let option = "<input type=\"datetime-local\" id=\"" + options + "\" name=\"" + options + "\" class=\"form-control\">\n"
         $('#start').append(option);
-
         options += 1;
         option = "<input type=\"datetime-local\" id=\"" + options + "\" name=\"" + options + "\" class=\"form-control\">\n"
         $('#end').append(option);
@@ -128,8 +127,6 @@ function addItem(){
             submitHandler: submit,
         });
     });
-
-
 }
 
 function submit(){
@@ -171,8 +168,8 @@ function submit(){
         success: function (response) {
             console.log("ajax post success. response:")
             console.log(response);
-            loadList()
-            $('#newAppointment').slideUp(500, function () {
+            loadList();
+                $('#details').slideUp(500, function () {
                 $('#appointmentList').fadeIn(200);
             });
         },
@@ -183,6 +180,72 @@ function submit(){
             alert(errormessage);
         }
     });
+}
+
+function addPerson(){
+    /*
+    //name + required
+    $('#submitChoice').on('click', function (){
+        console.log("adding person");
+        $('#choiceForm').validate({
+            rules: {
+                person: {required: true
+                },
+
+                comment: {
+                    depends: function (element) {
+                        return $("checkbox").is(":checked");
+                    }
+                }
+
+            },
+            submitHandler: submitPerson,
+        });
+    })
+     */
+    //id=\"option-" + dateoption.id
+    $('#submitChoice').on('click', submitPerson());
+}
+
+function submitPerson(){
+    console.log("success submitting person");
+    var lastDate = $(":checkbox:last-of-type").attr("value");
+    console.log(lastDate);
+    //value
+    var name = $("#person").val();
+    var comment = $("#comment").val();
+    var method = "newPeople";
+    var param = "newPeople";
+
+    $.ajax({
+        type: "POST",
+        method: "POST",
+        url: "../Backend/serviceHandler.php",
+        data: { data : {
+                name: name,
+                comment: comment,
+                method: method,
+                param: param}
+        },
+        cache: false,
+        dataType: "json",
+        success: function (response) {
+            console.log("ajax post success. response:")
+            console.log(response);
+            loadList()
+            $('#details').slideUp(500, function () {
+                $('#appointmentList').fadeIn(200);
+            });
+        },
+        error: function(response){
+            console.log("ajax post error. response:")
+            console.log(response);
+            let errormessage = "<p>" + response['status'] + " " + response['responseText'] + "</p>";
+            alert(errormessage);
+        }
+    });
+
+
 }
 
 function toggleList(){ /*toggle between hide and show*/
@@ -222,6 +285,7 @@ function editList(){
 
 $(document).ready(
     $("#add").on("click", addItem),
+    $('#submitChoice').on("click", addPerson),
     $('#visibility').on("click", toggleList),
     $('#edit').on("click", editList),
     $('#newAppointment').hide(),

@@ -16,6 +16,9 @@ class logic{
             case "newAppointment":
                 $res = $this->dh->save($payload);
                 break;
+            case "newPeople":
+                $res = $this->dh->savePeople($payload);
+                break;
             //cases using param blabla to be cont'd
             default:
                 $res = null;
